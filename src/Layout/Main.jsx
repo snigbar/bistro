@@ -11,6 +11,7 @@ const Main = () => {
 
   return (
     <>
+    
     {navbarCondition || <NavBar></NavBar>}
     <Outlet></Outlet>
     <Footer></Footer>

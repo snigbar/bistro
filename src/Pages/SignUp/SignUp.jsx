@@ -5,6 +5,7 @@ import { Link } from 'react-scroll';
 import { AuthContext } from '../../Providers/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 
 const SignUp = () => {
@@ -13,33 +14,45 @@ const SignUp = () => {
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
 
-    const onSubmit = data => {
-  
-      createUser(data.email,data.password)
-      
-      .then(result => {
-        const loggedUser = result.user;
-        console.log(loggedUser);
-        updateUserProfile(data.name, data.photoURL)
-            .then(() => {
-                console.log('user profile info updated')
-                reset();
-                Swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: `Welcome, ${data.name}`,
-                  showConfirmButton: false,
-                  timer: 1500
-              });
-                
-                navigate('/');
+  const onSubmit = data => {
 
-      })
-            .catch(error => console.log(error))
-    })
+    createUser(data.email, data.password)
+        .then(result => {
+
+            const loggedUser = result.user;
+            console.log(loggedUser);
+
+            updateUserProfile(data.name, data.photoURL)
+                .then(() => {
+                    const saveUser = { name: data.name, email: data.email }
+                    fetch('http://localhost:5000/users', {
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(saveUser)
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.insertedId) {
+                                reset();
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: `Thank you, ${data.name}`,
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                });
+                                navigate('/');
+                            }
+                        })
+
+
+
+                })
+                .catch(error => console.log(error))
+        })
 };
-      
-    
 
 
 
@@ -110,6 +123,7 @@ const SignUp = () => {
         <div className="form-control">
           <Link to='/login' className="text-zinc-600 hover:text-zinc-800 text-lg my-4 cursor-pointer" type='submit'>Already have an account? Login</Link>
         </div>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
     </form>

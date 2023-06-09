@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react'
 import app from '../Firebase/firebase.config'
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
+import axios from "axios";
 
 export const AuthContext = createContext(null)
 const auth = getAuth(app)
@@ -32,11 +33,30 @@ const AuthProvider = ({children}) => {
       });
   }
 
+  const googleProvider = new GoogleAuthProvider();
+
+  const signInWithGoogle = () =>{
+    return signInWithPopup(auth, googleProvider)
+  }
+
   useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, currentUser => {
           setUser(currentUser);
-          console.log('current user', currentUser);
-          setLoading(false);
+
+          if(currentUser){
+            axios.post('http://localhost:5000/jwt', {email: currentUser.email})
+            .then(data => {
+                localStorage.setItem("access-token-bistro", data.data.token)
+
+                 
+            setLoading(false);
+            })
+         
+          }else{
+            localStorage.removeItem("access-token-bistro")
+          }
+
+          
       });
       return () => {
           return unsubscribe();
@@ -49,7 +69,8 @@ const AuthProvider = ({children}) => {
       createUser,
       signIn,
       logOut,
-      updateUserProfile
+      updateUserProfile,
+      signInWithGoogle
   }
 
     

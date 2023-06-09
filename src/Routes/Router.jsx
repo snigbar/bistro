@@ -5,6 +5,12 @@ import Menu from "../Pages/Menu/Menu";
 import Order from "../Pages/Order/Order";
 import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
+import Dashboard from "../Layout/Dashboard";
+import MyCart from "../Pages/MyCart/MyCart";
+import AllUsers from "../Pages/Admin/AllUsers";
+import AddItem from "../Pages/Admin/AddItem";
+import AdminRoute from "./AdminRoute";
+import ManageItems from "../Pages/Admin/ManageItems";
 
 
  const router = createBrowserRouter([
@@ -34,6 +40,28 @@ import SignUp from "../Pages/SignUp/SignUp";
         },
       ]
     },
+    {
+      path:'/dashboard',
+      element: <Dashboard></Dashboard>,
+      children:[
+      {
+        path:'/dashboard/mycart',
+        element:<MyCart></MyCart>
+      },
+      {
+        path:'/dashboard/allusers',
+        element:<AllUsers></AllUsers>
+      },
+      {
+        path: '/dashboard/additem',
+        element:<AdminRoute><AddItem></AddItem></AdminRoute>
+      },
+      {
+        path: '/dashboard/manageitems',
+        element:<AdminRoute><ManageItems></ManageItems></AdminRoute>
+      }
+      ]
+    }
   ]);
 
   export default router

@@ -16,3 +16,11 @@
   
    color: white !important;
 }
+
+.active{
+    background-color: #FBBD23 !important;
+}
+
+#admin .active{
+    background-color: #FF1821 !important;
+}

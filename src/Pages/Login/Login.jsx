@@ -4,6 +4,7 @@ import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-s
 import { useForm } from "react-hook-form";
 import { AuthContext } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Login = () => {
 
@@ -84,16 +85,18 @@ const Login = () => {
           <label className="label">
             <span className="label-text">Captcha</span>
           </label>
-          <input type="text" placeholder="captcha" name="captcha" className="input input-bordered w-64 mb-2" ref={captchaRef} onChange={validate} required/>
+          <input type="text" placeholder="captcha" name="captcha" className="input input-bordered w-64 mb-2" ref={captchaRef} onChange={validate}/>
           {disable? <p className='text-red-600'>fill out the captcha</p>: <p className='text-indigo-600'>matched</p>}
         </div>
-
+  
         <div className="form-control mt-6">
-          <button className="btn btn-warning" type='submit' disabled={disable}>Login</button>
+            {/* todo add disable*/}
+          <button className="btn btn-warning" type='submit' disabled={false}>Login</button>
         </div>
         <div className="form-control">
           <Link to='/register' className="text-zinc-600 hover:text-zinc-800 text-lg my-4 cursor-pointer" type='submit'>Don't have an account? Register</Link>
         </div>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
     </form>
