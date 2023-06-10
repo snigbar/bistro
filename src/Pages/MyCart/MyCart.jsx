@@ -47,7 +47,7 @@ return (
         <div className="uppercase font-semibold h-[60px] flex justify-between items-center">
         <h3 className="text-sm">Total Items: {cart.length}</h3>
         <h3 className="text-sm">Total Price: ${total}</h3>
-        <button className="btn btn-primary btn-sm">Proceed to pay</button>
+        <Link to='/dashboard/payment'><button className="btn btn-primary btn-sm">Proceed to pay</button></Link>
         </div>
 
  <table className="table w-[50vw]">
